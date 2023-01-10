@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head'
 import Header from '../components/Header.jsx';
 
 const Workouts = () => {
-
   const [workouts, setWorkouts] = useState([]);
+
+  // grab data on load
+  useEffect(() => {
+
+  }, []);
 
   return (
     <>

@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css'
 
 import Header from '../components/Header.jsx';
 import Search from '../components/Search.jsx';
-import Confirmation from '../components/Confirmation.jsx';
+import Form from '../components/Form.jsx';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +23,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <Search></Search>
-        <Confirmation></Confirmation>
+        <Form></Form>
       </main>
     </>
   )
