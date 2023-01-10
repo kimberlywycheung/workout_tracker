@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import Head from 'next/head'
 import Header from '../components/Header.jsx';
 
-export default function Workouts() {
+const Workouts = () => {
+
+  const [workouts, setWorkouts] = useState([]);
+
   return (
     <>
     <Head>
@@ -13,4 +17,6 @@ export default function Workouts() {
     <Header></Header>
     </>
   );
-}
+};
+
+export default Workouts;

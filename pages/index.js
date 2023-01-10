@@ -3,10 +3,9 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 
-import { TextField, Button } from '@mui/material';
-
-import Confirmation from '../components/Confirmation.jsx';
 import Header from '../components/Header.jsx';
+import Search from '../components/Search.jsx';
+import Confirmation from '../components/Confirmation.jsx';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,13 +18,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header></Header>
-      <main className={styles.main}>
 
-        <div class="top-nav">
-        </div>
-        <TextField id="outlined-basic" label="Insert URL.." variant="outlined" />
-        <Button variant="contained">Add</Button>
+      <Header></Header>
+
+      <main className={styles.main}>
+        <Search></Search>
         <Confirmation></Confirmation>
       </main>
     </>

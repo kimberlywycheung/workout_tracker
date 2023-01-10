@@ -10,7 +10,7 @@ CREATE TABLE urls (
   category VARCHAR(1000) NOT NULL,
   length INTEGER NOT NULL,
   instructor VARCHAR(1000) NOT NULL
-)
+);
 
 CREATE TABLE workouts (
   id SERIAL PRIMARY KEY,
@@ -19,11 +19,11 @@ CREATE TABLE workouts (
   rating INTEGER DEFAULT 0,
   notes VARCHAR DEFAULT '',
   FOREIGN KEY (url_id) REFERENCES urls(id)
-)
+);
 
 CREATE TABLE tags (
   id SERIAL PRIMARY KEY,
   name VARCHAR(1000) NOT NULL,
   workout_id INTEGER NOT NULL,
   FOREIGN KEY (workout_id) REFERENCES workouts(id)
-)
+);
