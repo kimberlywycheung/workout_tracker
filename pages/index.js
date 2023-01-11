@@ -3,13 +3,22 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Header from '../components/Header.jsx';
 import Add from '../components/Add.jsx';
 import Form from '../components/Form.jsx';
 
 const Home = () => {
+  const [urlId, setUrlId] = useState(null);
+  const [url, setUrl] = useState(null);
+
+  useEffect(() => {
+    if (!url) {
+      setUrlId(null);
+    }
+  }, [url]);
+
   return (
     <>
       <Head>
@@ -22,8 +31,12 @@ const Home = () => {
       <Header></Header>
 
       <main className={styles.main}>
-        <Add></Add>
-        <Form></Form>
+        { !url &&
+          <Add setUrl={setUrl} setUrlId={setUrlId}></Add>
+        }
+        { url &&
+          <Form url={url} urlId={urlId} setUrl={setUrl}></Form>
+        }
       </main>
     </>
   )

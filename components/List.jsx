@@ -1,7 +1,11 @@
-import { Container } from '@mui/material';
+import Card from './Card.jsx';
 
 export default function List() {
+
   return (
-    <Container>List</Container>
+    <>
+    <div>list</div>
+    <Card/>
+    </>
   );
 }

@@ -1,16 +1,20 @@
-import { Container, TextField, Typography, Rating, FormControl,
+import { Container, Button, TextField, Typography, Rating, FormControl,
   InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Tags from './Tags.jsx';
 
 
-const Form = () => {
+const Form = ({ url, urlId, setUrl }) => {
 
-  const url = 'thisisaurl.com';
   const value = 0;
   const channel = '';
-  const handleChange = () => {
+  const handleChange = (e) => {
 
+  };
+
+  const clearURL = (e) => {
+    e.preventDefault();
+    setUrl(null);
   };
 
   return (
@@ -78,6 +82,7 @@ const Form = () => {
       <Grid2 xs={4}  md={8}>
         <Tags></Tags>
       </Grid2>
+
     </Grid2>
 
     <Container>
@@ -87,6 +92,9 @@ length of workout (min:sec)
 channel/instructor varchar */}
 
     </Container>
+
+    <Button variant="contained" onClick={clearURL} >Cancel</Button>
+    <Button variant="contained" onClick={clearURL} >Add Another URL</Button>
     </>
   );
 }

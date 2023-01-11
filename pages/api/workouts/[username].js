@@ -18,11 +18,11 @@ export default function handler(req, res) {
       break;
 
     case 'POST':
-      models.postWorkout(body, (data, err) => {
+      models.postURL(body, (data, err) => {
         if (err) {
           res.status(401).send(err);
         } else {
-          res.status(201).send('added');
+          res.status(201).send(data);
         }
       });
 
