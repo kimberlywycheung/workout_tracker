@@ -3,13 +3,13 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 
+import { useState } from 'react';
+
 import Header from '../components/Header.jsx';
-import Search from '../components/Search.jsx';
+import Add from '../components/Add.jsx';
 import Form from '../components/Form.jsx';
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+const Home = () => {
   return (
     <>
       <Head>
@@ -22,9 +22,11 @@ export default function Home() {
       <Header></Header>
 
       <main className={styles.main}>
-        <Search></Search>
+        <Add></Add>
         <Form></Form>
       </main>
     </>
   )
 }
+
+export default Home;

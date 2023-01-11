@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 
-export default function List() {
+export default function Graph() {
   return (
-    <Container>list</Container>
+    <Container>Graph</Container>
   );
 }

@@ -6,13 +6,13 @@ import styled from '@emotion/styled'
 //   height: 195;
 // `
 
-export default function Search() {
+const Add = () => {
   return (
     <Container>
       <TextField id="outlined-basic" label="Insert URL.." variant="outlined" />
       <Button variant="contained">Add</Button>
     </Container>
   );
-}
+};
 
-
+export default Add;
