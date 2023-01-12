@@ -19,6 +19,7 @@
 .DS_Store
 *.pem
 scrappeddata.json
+exampledata.json
 
 # debug
 npm-debug.log*
@@ -28,6 +29,7 @@ yarn-error.log*
 
 # local env files
 .env
+.env*.local
 
 # vercel
 .vercel
