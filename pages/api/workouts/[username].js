@@ -18,7 +18,9 @@ export default function handler(req, res) {
       break;
 
     case 'POST':
-      models.postURL(body, (data, err) => {
+      models.postWorkout(body, (data, err) => {
+        console.log(body);
+
         if (err) {
           res.status(401).send(err);
         } else {
