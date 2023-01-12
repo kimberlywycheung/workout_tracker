@@ -27,7 +27,7 @@ const Workouts = () => {
 
     <main className={styles.main}>
       <Graph></Graph>
-      <List></List>
+      <List workouts={workouts}></List>
     </main>
     </>
   );

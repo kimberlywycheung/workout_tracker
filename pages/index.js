@@ -12,6 +12,7 @@ import Form from '../components/Form.jsx';
 const Home = () => {
   const [urlId, setUrlId] = useState(null);
   const [url, setUrl] = useState(null);
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (!url) {
@@ -32,10 +33,10 @@ const Home = () => {
 
       <main className={styles.main}>
         { !url &&
-          <Add setUrl={setUrl} setUrlId={setUrlId}></Add>
+          <Add setUrl={setUrl} setFormData={setFormData}></Add>
         }
         { url &&
-          <Form url={url} urlId={urlId} setUrl={setUrl}></Form>
+          <Form url={url} urlId={urlId} setUrl={setUrl} formData={formData}></Form>
         }
       </main>
     </>
