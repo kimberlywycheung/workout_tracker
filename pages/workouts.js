@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import axios from 'axios';
 
 import Header from '../components/Header.jsx';
 import Graph from '../components/Graph.jsx';
 import List from '../components/List.jsx';
 
-const Workouts = () => {
-  const [workouts, setWorkouts] = useState([]);
+const Workouts = ({ workoutList }) => {
+  const [workouts, setWorkouts] = useState(null);
 
   // grab data on load
   useEffect(() => {
-
+    get(setWorkouts);
   }, []);
 
   return (
@@ -26,11 +27,24 @@ const Workouts = () => {
     <Header></Header>
 
     <main className={styles.main}>
-      <Graph></Graph>
+      {/* <Graph id="graph"></Graph> */}
       <List workouts={workouts}></List>
     </main>
     </>
   );
 };
+
+// get workouts
+const get = (cb) => {
+  axios.get('/api/workouts/username')
+    .then(({ data }) => cb(data))
+    .catch(err => console.log(err));
+};
+
+// Workouts.getInitialProps = async (ctx) => {
+//   axios.get("/api/workouts/kim")
+//     .then(({ data }) => {{ workoutList: data }})
+//     .catch(err => console.log('thisistheerr:', err));
+// };
 
 export default Workouts;

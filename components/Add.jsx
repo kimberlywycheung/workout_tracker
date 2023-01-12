@@ -5,16 +5,15 @@ import styled from '@emotion/styled';
 const scrape = require('../scraper.js');
 
 const Add = ({ setUrl, setFormData }) => {
-
   // handle URL submission
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const url = document.getElementById('outlined-basic url').value;
+
     if (url.length > 0) {
       setUrl(url);
 
-      let results;
       scrape(url, ({ data }) => {
         setFormData({
           channel: data.author_name,
@@ -22,13 +21,7 @@ const Add = ({ setUrl, setFormData }) => {
           thumbnail: data.thumbnail_url,
         });
       });
-      // setFormData
     }
-    // postURL(url)
-    //   .then((data) => {
-    //     setUrl(url);
-    //     setUrlId(data);
-    //    });
   };
 
   return (
@@ -49,18 +42,10 @@ const Add = ({ setUrl, setFormData }) => {
           >Add</Button>
         </Grid2>
       </Grid2>
-      <p>https://www.youtube.com/watch?v=giSo0qQIscE&ab_channel=YogaWithAdriene</p>
+      {/* <p>https://www.youtube.com/watch?v=giSo0qQIscE&ab_channel=YogaWithAdriene</p>
+      <p>https://www.youtube.com/watch?v=sKyYyeFl6lo&ab_channel=CarolineGirvan</p> */}
     </Container>
   );
-};
-
-// post to URL table
-const postURL = async (formData) => {
-  const response = await fetch("/api/workouts/:username", {
-    method: "POST",
-    body: formData,
-  });
-  return response.json();
 };
 
 export default Add;

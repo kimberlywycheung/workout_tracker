@@ -41,4 +41,11 @@ module.exports = {
       .then(({ rows }) => cb(rows))
       .catch((err) => console.log(err));
   },
+
+  getTags: (cb) => {
+    pool
+      .query(`SELECT DISTINCT name FROM tags;`)
+      .then(({ rows }) => cb(rows))
+      .catch((err) => console.log(err));
+  }
 };

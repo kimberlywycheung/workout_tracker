@@ -1,9 +1,3 @@
-// import '../styles/globals.css'
-
-// export default function App({ Component, pageProps }) {
-//   return <Component {...pageProps} />
-// }
-
 import * as React from 'react';
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
@@ -14,7 +8,6 @@ import createEmotionCache from '../config/createEmotionCache';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
-
 
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;

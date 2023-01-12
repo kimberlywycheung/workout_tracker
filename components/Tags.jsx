@@ -20,16 +20,14 @@ const MenuProps = {
 };
 
 const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
+  'full body',
+  'pha training',
+  'dumbbell cardio',
+  'resistance training',
+  '30 minutes',
+  'hiit',
+  'cardio',
+  'home yoga'
 ];
 
 function getStyles(name, personName, theme) {
@@ -41,7 +39,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-export default function Tags() {
+const Tags = () => {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
@@ -57,7 +55,7 @@ export default function Tags() {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ width: 1 }}>
         <InputLabel id="demo-multiple-chip-label">Tags</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
@@ -89,3 +87,12 @@ export default function Tags() {
     </div>
   );
 }
+
+Tags.getInitialProps = async (url) => {
+  console.log('getting intiial tags');
+  axios.get('/tags')
+    .then((data) => { return { tags : data }})
+    .catch(err => console.log(err));
+}
+
+export default Tags;

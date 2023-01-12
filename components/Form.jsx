@@ -1,9 +1,11 @@
-import { Container, Button, TextField, Typography, Rating, FormControl,
-  InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2';
-import Tags from './Tags.jsx';
 import { useState, useEffect } from 'react';
-const scrape = require('../scraper.js');
+import axios from 'axios';
+
+import { Container, Button, TextField, Typography, Rating, FormControl,
+  InputLabel, Select, MenuItem, FormHelperText, InputAdornment } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2';
+
+import Tags from './Tags.jsx';
 
 let form = {
   title: '',
@@ -20,17 +22,21 @@ const Form = ({ url, urlId, setUrl, formData }) => {
   const [title, setTitle] = useState('');
   const [channel, setChannel] = useState('');
   const [thumbnail, setThumbnail] = useState('');
+  let difficulty = 0;
 
   let data = {
     title: '',
     channel: '',
     thumbnail: '',
+    minutes: 0,
     rating: 0,
     difficulty: 0,
     category: '',
     notes: '',
     tags: []
   }
+
+  console.log(title);
 
   useEffect (() => {
     setTitle(formData.title);
@@ -43,14 +49,22 @@ const Form = ({ url, urlId, setUrl, formData }) => {
     console.log(data[field]);
   };
 
-  const saveForm = () => {
-
+  const saveForm = (e) => {
+    e.preventDefault();
+    postWorkout({
+      url: url,
+      data: data
+    });
   }
 
   const clearURL = (e) => {
     e.preventDefault();
     setUrl(null);
   };
+
+  if (!title) {
+    return;
+  }
 
   return (
     <>
@@ -77,12 +91,24 @@ const Form = ({ url, urlId, setUrl, formData }) => {
               defaultValue={title}
               helperText="Required"
               onChange={(e) => handleChange(e, 'title')}
+        />
+          </Grid2>
+
+           {/* Channel */}
+           <Grid2 xs={4}>
+            <TextField
+              sx={{ width: 1 }}
+              id="outlined-helperText"
+              label="Channel"
+              defaultValue={channel}
+              helperText="Required"
+              onChange={(e) => handleChange(e, 'channel')}
             />
           </Grid2>
 
           {/* Category */}
           <Grid2 xs={4}>
-            <FormControl required sx={{ minWidth: 230 }}>
+            <FormControl required sx={{ width: 1 }}>
               <InputLabel id="demo-simple-select-required-label">Category</InputLabel>
               <Select
                 sx={{ width: 1 }}
@@ -101,36 +127,30 @@ const Form = ({ url, urlId, setUrl, formData }) => {
             </FormControl>
           </Grid2>
 
-          {/* Channel */}
-          <Grid2 xs={6}>
-            <TextField
-              sx={{ width: 1 }}
-              id="outlined-helperText"
-              label="Channel"
-              defaultValue={channel}
-              helperText="Required"
-              onChange={(e) => handleChange(e, 'channel')}
-            />
-          </Grid2>
+
 
           {/* Length of Workout */}
-          <Grid2 xs={6}>
+          <Grid2 xs={8}>
             <TextField
-              sx={{ width: 1 }}
-              id="outlined-helperText"
-              label="Length"
-              defaultValue=''
-              helperText="Required"
-              onChange={(e) => handleChange(e, 'length')}
-            />
+                label="Length of Workout*"
+                id="outlined-start-adornment"
+                sx={{ width: 0.5 }}
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">min</InputAdornment>,
+                }}
+                helperText="Required"
+                onChange={(e) => handleChange(e, 'length')}
+              />
           </Grid2>
+
+
 
           {/* Difficulty */}
           <Grid2 xs={3}>
             <Typography component="legend">Difficulty</Typography>
             <Rating
               name="simple-controlled"
-              value={data.difficulty}
+              value={difficulty}
               onChange={(e, newValue) => handleChange(e, 'difficulty')}
             />
           </Grid2>
@@ -145,8 +165,13 @@ const Form = ({ url, urlId, setUrl, formData }) => {
             />
           </Grid2>
 
+          {/* Tags */}
+          <Grid2 xs={12}>
+            <Tags></Tags>
+          </Grid2>
+
           {/* Notes */}
-          <Grid2 xs={6}>
+          <Grid2 xs={12}>
             <TextField
               sx={{ width: 1 }}
               id="outlined-multiline-static"
@@ -154,11 +179,6 @@ const Form = ({ url, urlId, setUrl, formData }) => {
               multiline rows={4}
               onChange={(e) => handleChange(e, 'notes')}
             />
-          </Grid2>
-
-          {/* Tags */}
-          <Grid2 xs={4}>
-            <Tags></Tags>
           </Grid2>
 
         </Grid2>
@@ -177,25 +197,11 @@ const Form = ({ url, urlId, setUrl, formData }) => {
 }
 
 // post to table
-const postWorkout = async (formData) => {
-  axios.fetch("/api/workouts/:username", {
-      method: "POST",
-      body: formData,
-    })
-    .then(data => data.json());
+const postWorkout = (formData) => {
+  axios.post("/api/workouts/:username", formData)
+    .then(data => data.json())
+    .catch(err => console.log(err));
 };
 
-  // static async getInitialProps(url) {
-  //   const res = await fetch(url);
-  //   const json = await res.json();
-  //   return { stars: json.stargazers_count };
-  // }
-
-// Form.getInitialProps = async (url) => {
-//   console.log('getting intiial props');
-//   const res = await scrape(url);
-//   const json = await res.json();
-//   return { videoData: json };
-// }
 
 export default Form;
