@@ -1,53 +1,61 @@
-const HTMLParser = require('node-html-parser')
-const fs = require('fs')
-const fetch = (...args) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const HTMLParser = require('node-html-parser');
+const axios = require('axios');
+const fs = require('fs');
 
-const scraper = async (url) => {
-  await fetch(`${url}`)
-  .then(res => res.text())
-  .then(body => extractData(HTMLParser.parse(body)))
+const scrape = (url, cb) => {
+  axios.get(`http://youtube.com/oembed?url=${url}&format=json`)
+  .then(res => cb(res))
+  .catch(err => console.log(err));
+
+  // axios.get(`${url}`, {
+  //   mode: 'no-cors',
+  //   responseType: 'json',
+  //   headers: {'X-Requested-With': 'XMLHttpRequest'},
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*'
+  //   },
+  // })
+  // .then(res => res.text())
+  // .then(body => HTMLParser.parse(body))
+  // .then(root => extractData(root))
+  // .then(data => cb(data))
+  // .catch(err => console.log(err));
 };
 
-scraper('https://www.youtube.com/watch?v=sKyYyeFl6lo&ab_channel=CarolineGirvan')
+module.exports = scrape;
 
-const extractData = (root) => {
-  // Extract
-  const htmlBody = root.querySelector('body').innerHTML;
+// scrape('https://www.youtube.com/watch?v=sKyYyeFl6lo&ab_channel=CarolineGirvan');
+// scrape('https://www.youtube.com/watch?v=giSo0qQIscE&ab_channel=YogaWithAdriene', () => {});
+// scrape('https://www.youtube.com/watch?v=l9DPeGeWNYY&ab_channel=Raddy');
 
-  // Transform
-  const htmlBodyArr = htmlBody.split('\n')[0];
+// const extractData = (root) => {
+//   // Extract
+//   const htmlBody = root.querySelector('body').toString();
+//   console.log('htmlbody', htmlBody);
 
-  const startIndex = htmlBodyArr.indexOf('videoDetails');
-  const stopIndex = htmlBodyArr.lastIndexOf("}");
-  const videoDetailsString = '{' + htmlBodyArr.slice(startIndex - 1, stopIndex + 1);
-  const videoObj = JSON.parse(videoDetailsString);
+//   // Transform
+//   const htmlBodyArr = htmlBody.split('\n')[0];
+//   const startIndex = htmlBodyArr.indexOf('videoDetails');
+//   const stopIndex = htmlBodyArr.lastIndexOf("}");
+//   const videoDetailsString = '{' + htmlBodyArr.slice(startIndex - 1, stopIndex + 1);
+//   const videoObj = JSON.parse(videoDetailsString);
+//   const videoDetails = videoObj.videoDetails;
+//   const videoData = {
+//     title: videoDetails.title,
+//     author: videoDetails.author,
+//     length: videoDetails.lengthSeconds,
+//     keywords: videoDetails.keywords,
+//     thumbnail: videoDetails.thumbnail.thumbnails[0].url
+//   }
 
-  const videoDetails = videoObj.videoDetails;
+//   // Load
+//   fs.writeFile(
+//     'scrappeddata.json', JSON.stringify(videoData), function(err) {
+//         if (err) throw err;
+//         console.log('successfully saved file');
+//     }
+//   );
 
-  // console.log(videoDetails.title);
-  // console.log(videoDetails.author);
-  // console.log(videoDetails.lengthSeconds);
-  // console.log(videoDetails.keywords);
-  // console.log(videoDetails.thumbnail.thumbnails[0].url);
-
-  const videoData = {
-    title: videoDetails.title,
-    author: videoDetails.author,
-    length: videoDetails.lengthSeconds,
-    keywords: videoDetails.keywords,
-    thumbnail: videoDetails.thumbnail.thumbnails[0].url
-  }
-  console.log(videoData);
-  return videoData;
-
-  // USED FOR VALIDATING DATA
-  // fs.writeFile(
-  //   'scrappeddata.json', JSON.stringify(videoDetails), function(err) {
-  //       if (err) throw err;
-  //       console.log('successfully saved file');
-  //   }
-  // );
-};
-
-module.exports = scraper;
+//   return videoData;
+// };
