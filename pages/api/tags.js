@@ -1,4 +1,4 @@
-const models = require('../../../server/models/index.js');
+const models = require('../../server/models/index.js');
 
 export default function handler(req, res) {
   const reqMethod = req.method;
@@ -7,7 +7,7 @@ export default function handler(req, res) {
 
   switch (reqMethod) {
     case 'GET':
-      models.getTags(username, (data, err) => {
+      models.getTags((data, err) => {
         if (err) {
           res.status(400).send(err);
         } else {

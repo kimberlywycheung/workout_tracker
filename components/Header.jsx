@@ -36,14 +36,14 @@ function useRouteMatch(patterns) {
   return null;
 }
 
-function MyTabs() {
+function MyTabs({setCurrentPage}) {
   const routeMatch = useRouteMatch(['/', '/workouts']);
   const currentTab = routeMatch?.pattern?.path;
 
   return (
     <Tabs value={currentTab}>
-      <Tab label="Add Workout" value="/" to="/" component={Link} />
-      <Tab label="View All" value="/workouts" to="/workouts" component={Link} />
+      <Tab label="Add Workout" value="/" to="/" component={Link} onClick={()=>{ setCurrentPage('home') }}/>
+      <Tab label="View All" value="/workouts" to="/workouts" component={Link} onClick={()=>{ setCurrentPage('view') }}/>
     </Tabs>
   );
 }

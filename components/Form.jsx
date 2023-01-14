@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { Container, Button, TextField, Typography, Rating, FormControl,
-  InputLabel, Select, MenuItem, FormHelperText, InputAdornment } from '@mui/material';
+  InputLabel, Select, MenuItem, FormHelperText, InputAdornment, Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
 import Tags from './Tags.jsx';
+import Category from './Category.jsx';
 
-let form = {
+let data = {
+  date: null,
   title: '',
   channel: '',
   thumbnail: '',
+  minutes: 0,
   rating: 0,
   difficulty: 0,
   category: '',
@@ -18,51 +21,54 @@ let form = {
   tags: []
 };
 
-const Form = ({ url, urlId, setUrl, formData }) => {
+const Form = ({ url, setUrl, formData, setSnackbar }) => {
   const [title, setTitle] = useState('');
   const [channel, setChannel] = useState('');
   const [thumbnail, setThumbnail] = useState('');
-  let difficulty = 0;
-
-  let data = {
-    title: '',
-    channel: '',
-    thumbnail: '',
-    minutes: 0,
-    rating: 0,
-    difficulty: 0,
-    category: '',
-    notes: '',
-    tags: []
-  }
-
-  console.log(title);
+  const [category, setCategory] = useState('');
+  const [rating, setRating] = useState(0);
+  const [difficulty, setDifficulty] = useState(0);
+  const [tags, setTags] = useState([]);
 
   useEffect (() => {
-    setTitle(formData.title);
-    setChannel(formData.channel);
-    setThumbnail(formData.thumbnail);
+    if (formData) {
+      data.date = new Date().toLocaleDateString();
+      data.title = formData.title;
+      data.channel = formData.channel;
+      data.thumbnail = formData.thumbnail;
+    }
   }, [formData]);
 
-  const handleChange = (e, field) => {
-    data[field] = e.target.value;
-    console.log(data[field]);
+  useEffect(() => {
+    if (category) {
+      handleChange(null, 'category', category);
+    }
+  }, [category])
+
+  const handleChange = (e, field, newValue) => {
+    if (!newValue) {
+      data[field] = e.target.value;
+    } else {
+      data[field] = newValue;
+    }
   };
 
   const saveForm = (e) => {
     e.preventDefault();
-    postWorkout({
-      url: url,
-      data: data
-    });
+    postWorkout({ url: url, data: data });
+    clearURL(null);
+    setSnackbar(true)
   }
 
   const clearURL = (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     setUrl(null);
+    clearForm();
   };
 
-  if (!title) {
+  if (!formData) {
     return;
   }
 
@@ -70,8 +76,20 @@ const Form = ({ url, urlId, setUrl, formData }) => {
     <>
       <Container>
         <Grid2 container spacing={2}>
+          {/* Date */}
+          <Grid2 xs={2}>
+            <TextField
+                label="Date*"
+                id="outlined-helperText"
+                defaultValue={new Date().toLocaleDateString()}
+                sx={{ width: 1 }}
+                helperText="Required"
+                onChange={(e) => setDate(e.target.value)}
+              />
+          </Grid2>
+
           {/* URL */}
-          <Grid2 xs={12} >
+          <Grid2 xs={10} >
             <TextField
               sx={{ width: 1 }}
               tag='url'
@@ -88,7 +106,7 @@ const Form = ({ url, urlId, setUrl, formData }) => {
               sx={{ width: 1 }}
               id="outlined-helperText"
               label="Name of Workout"
-              defaultValue={title}
+              defaultValue={formData.title}
               helperText="Required"
               onChange={(e) => handleChange(e, 'title')}
         />
@@ -100,41 +118,23 @@ const Form = ({ url, urlId, setUrl, formData }) => {
               sx={{ width: 1 }}
               id="outlined-helperText"
               label="Channel"
-              defaultValue={channel}
+              defaultValue={formData.channel}
               helperText="Required"
               onChange={(e) => handleChange(e, 'channel')}
             />
           </Grid2>
 
           {/* Category */}
-          <Grid2 xs={4}>
-            <FormControl required sx={{ width: 1 }}>
-              <InputLabel id="demo-simple-select-required-label">Category</InputLabel>
-              <Select
-                sx={{ width: 1 }}
-                labelId="demo-simple-select-required-label"
-                id="demo-simple-select-required"
-                value={data.category}
-                label="Category *"
-                onChange={(e) => handleChange(e, 'category')}
-              >
-                <MenuItem value=""> <em>None</em> </MenuItem>
-                <MenuItem value='HIIT'>HIIT</MenuItem>
-                <MenuItem value='Yoga'>Yoga</MenuItem>
-                <MenuItem value='Pilates'>Pilates</MenuItem>
-              </Select>
-              <FormHelperText>Required</FormHelperText>
-            </FormControl>
+          <Grid2 xs={3}>
+            <Category category={category} setCategory={setCategory} handleChange={handleChange}></Category>
           </Grid2>
 
-
-
           {/* Length of Workout */}
-          <Grid2 xs={8}>
+          <Grid2 xs={4.5}>
             <TextField
-                label="Length of Workout*"
+                label="Length of Workout"
                 id="outlined-start-adornment"
-                sx={{ width: 0.5 }}
+                sx={{ width: 0.8 }}
                 InputProps={{
                   endAdornment: <InputAdornment position="end">min</InputAdornment>,
                 }}
@@ -143,31 +143,35 @@ const Form = ({ url, urlId, setUrl, formData }) => {
               />
           </Grid2>
 
-
-
           {/* Difficulty */}
-          <Grid2 xs={3}>
+          <Grid2 xs={2.5}>
             <Typography component="legend">Difficulty</Typography>
             <Rating
               name="simple-controlled"
               value={difficulty}
-              onChange={(e, newValue) => handleChange(e, 'difficulty')}
+              onChange={(e, newValue) => {
+                setDifficulty(newValue);
+                handleChange(e, 'difficulty', newValue);
+              }}
             />
           </Grid2>
 
           {/* Rating */}
-          <Grid2 xs={8}>
+          <Grid2 xs={2}>
             <Typography component="legend">Rating</Typography>
             <Rating
               name="simple-controlled"
-              value={data.rating}
-              onChange={(e, newValue) => handleChange(e, 'rating')}
+              value={rating}
+              onChange={(e, newValue) => {
+                setRating(newValue);
+                handleChange(e, 'rating', newValue);
+              }}
             />
           </Grid2>
 
           {/* Tags */}
           <Grid2 xs={12}>
-            <Tags></Tags>
+            {/* <Tags url={url}></Tags> */}
           </Grid2>
 
           {/* Notes */}
@@ -186,22 +190,36 @@ const Form = ({ url, urlId, setUrl, formData }) => {
       </Container>
 
       {/* Action buttons */}
-      <Button xs={{m: 2, p: 4}} variant="contained" onClick={saveForm}>
-        Save
-      </Button>
-      <Button xs={{m: 2, p: 4}} variant="contained" onClick={clearURL}>
-        Cancel
-      </Button>
+      <Stack direction="row" spacing={2}>
+        <Button xs={{m: 2, p: 4}} variant="contained" onClick={saveForm}>
+          Save
+        </Button>
+        <Button xs={{m: 2, p: 4}} variant="outlined" onClick={clearURL}>
+          Cancel
+        </Button>
+      </Stack>
     </>
   );
-}
+};
 
 // post to table
 const postWorkout = (formData) => {
   axios.post("/api/workouts/:username", formData)
-    .then(data => data.json())
     .catch(err => console.log(err));
 };
 
+// HELPER FUNCTIONS
+const clearForm = () => {
+  data.date = null,
+  data.title = '',
+  data.channel = '',
+  data.thumbnail = '',
+  data.minutes = 0,
+  data.rating = 0,
+  data.difficulty = 0,
+  data.category = '',
+  data.notes = '',
+  data.tags = []
+}
 
 export default Form;

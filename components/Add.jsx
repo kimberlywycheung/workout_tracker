@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 const scrape = require('../scraper.js');
 
 const Add = ({ setUrl, setFormData }) => {
-  // handle URL submission
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -13,7 +13,6 @@ const Add = ({ setUrl, setFormData }) => {
 
     if (url.length > 0) {
       setUrl(url);
-
       scrape(url, ({ data }) => {
         setFormData({
           channel: data.author_name,
@@ -25,7 +24,7 @@ const Add = ({ setUrl, setFormData }) => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Grid2 container spacing={2}>
         <Grid2 xs={11}>
           <TextField
@@ -42,8 +41,9 @@ const Add = ({ setUrl, setFormData }) => {
           >Add</Button>
         </Grid2>
       </Grid2>
-      {/* <p>https://www.youtube.com/watch?v=giSo0qQIscE&ab_channel=YogaWithAdriene</p>
-      <p>https://www.youtube.com/watch?v=sKyYyeFl6lo&ab_channel=CarolineGirvan</p> */}
+      <p>https://www.youtube.com/watch?v=giSo0qQIscE&ab_channel=YogaWithAdriene</p>
+      <p>https://www.youtube.com/watch?v=sKyYyeFl6lo&ab_channel=CarolineGirvan</p>
+      <p>https://www.youtube.com/watch?v=zdz8c9a-rDo&ab_channel=MoveWithNicole</p>
     </Container>
   );
 };

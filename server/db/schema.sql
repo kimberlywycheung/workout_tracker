@@ -6,13 +6,15 @@ CREATE DATABASE workouts;
 CREATE TABLE workouts (
   id SERIAL PRIMARY KEY,
   url VARCHAR(1000) NOT NULL,
+  date VARCHAR(1000) NOT NULL,
   title VARCHAR(1000) NOT NULL,
   channel VARCHAR(1000) NOT NULL,
   thumbnail VARCHAR(1000) NOT NULL,
   difficulty INTEGER DEFAULT 0,
   rating INTEGER DEFAULT 0,
   category VARCHAR(1000) NOT NULL,
-  notes VARCHAR DEFAULT ''
+  notes VARCHAR DEFAULT '',
+  length_in_min INTEGER DEFAULT 0
 );
 
 CREATE TABLE tags (

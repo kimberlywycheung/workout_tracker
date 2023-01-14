@@ -7,12 +7,14 @@ import Header from '../components/Header.jsx';
 import Graph from '../components/Graph.jsx';
 import List from '../components/List.jsx';
 
-const Workouts = ({ workoutList }) => {
+const Workouts = () => {
   const [workouts, setWorkouts] = useState(null);
 
   // grab data on load
   useEffect(() => {
-    get(setWorkouts);
+    // getAll(setWorkouts);
+    getSummary(setWorkouts);
+    console.log(workouts);
   }, []);
 
   return (
@@ -35,8 +37,14 @@ const Workouts = ({ workoutList }) => {
 };
 
 // get workouts
-const get = (cb) => {
-  axios.get('/api/workouts/username')
+const getAll = (cb) => {
+  axios.get('/api/workouts/all')
+    .then(({ data }) => cb(data))
+    .catch(err => console.log(err));
+};
+
+const getSummary = (cb) => {
+  axios.get('/api/workouts/summary')
     .then(({ data }) => cb(data))
     .catch(err => console.log(err));
 };
