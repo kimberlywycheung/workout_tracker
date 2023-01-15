@@ -18,7 +18,8 @@ module.exports = {
         .query(`
           SELECT DISTINCT title, COUNT(id) as count, AVG(rating) as rating, AVG(difficulty) as difficulty, url, thumbnail
           FROM workouts
-          GROUP BY title, url, thumbnail;
+          GROUP BY title, url, thumbnail
+          ORDER BY count DESC;
         `)
           .then(({ rows }) => cb(rows))
           .catch((err) => console.log(err));

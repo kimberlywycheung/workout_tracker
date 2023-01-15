@@ -9,7 +9,7 @@ import Tags from './Tags.jsx';
 import Category from './Category.jsx';
 
 let data = {
-  date: null,
+  date: '',
   title: '',
   channel: '',
   thumbnail: '',
@@ -29,6 +29,7 @@ const Form = ({ url, setUrl, formData, setSnackbar }) => {
   const [rating, setRating] = useState(0);
   const [difficulty, setDifficulty] = useState(0);
   const [tags, setTags] = useState([]);
+  const [form, setForm] = useState({});
 
   useEffect (() => {
     if (formData) {
@@ -55,9 +56,16 @@ const Form = ({ url, setUrl, formData, setSnackbar }) => {
 
   const saveForm = (e) => {
     e.preventDefault();
-    postWorkout({ url: url, data: data });
-    clearURL(null);
-    setSnackbar(true)
+
+    axios.post("/api/workouts/:username", {
+      url: url,
+      data: data
+    })
+      .then(() => {
+        clearURL(null);
+        setSnackbar(true);
+      })
+      .catch(err => console.log(err));
   }
 
   const clearURL = (e) => {
@@ -203,8 +211,10 @@ const Form = ({ url, setUrl, formData, setSnackbar }) => {
 };
 
 // post to table
-const postWorkout = (formData) => {
+const postWorkout = (formData, cb) => {
+  console.log(formData);
   axios.post("/api/workouts/:username", formData)
+    .then(() => cb())
     .catch(err => console.log(err));
 };
 

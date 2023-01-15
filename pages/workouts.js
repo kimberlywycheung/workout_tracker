@@ -12,9 +12,7 @@ const Workouts = () => {
 
   // grab data on load
   useEffect(() => {
-    // getAll(setWorkouts);
     getSummary(setWorkouts);
-    console.log(workouts);
   }, []);
 
   return (
@@ -48,11 +46,5 @@ const getSummary = (cb) => {
     .then(({ data }) => cb(data))
     .catch(err => console.log(err));
 };
-
-// Workouts.getInitialProps = async (ctx) => {
-//   axios.get("/api/workouts/kim")
-//     .then(({ data }) => {{ workoutList: data }})
-//     .catch(err => console.log('thisistheerr:', err));
-// };
 
 export default Workouts;

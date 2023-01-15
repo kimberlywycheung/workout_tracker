@@ -6,13 +6,13 @@ import axios from 'axios';
 const filter = createFilterOptions();
 
 export default function Tags({ url }) {
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState(getTags());
   const [value, setValue] = useState(null);
 
-  useEffect(() => {
-    setTags(getTags());
-    console.log('tags', value);
-  }, []);
+  // useEffect(() => {
+  //   setTags(getTags());
+  //   console.log('tags', value);
+  // }, []);
 
   return (
     <Autocomplete
