@@ -69,7 +69,7 @@ const Home = () => {
 
       { !homeView &&
         <>
-          <Graph id="graph"></Graph>
+          {/* <Graph id="graph"></Graph> */}
           <List workouts={workouts}></List>
         </>
       }
