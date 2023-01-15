@@ -16,29 +16,5 @@ export default function handler(req, res) {
       });
 
       break;
-
-    case 'POST':
-      models.postWorkout(body, (data, err) => {
-        console.log(body);
-
-        if (err) {
-          res.status(401).send(err);
-        } else {
-          res.status(201).send(data);
-        }
-      });
-
-      break;
-
-    case 'PUT':
-      models.updateWorkout(body, (data, err) => {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.status(204).send('updated');
-        }
-      });
-
-      break;
     }
 }
